@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+<title>20以内加减法趣味炮弹游戏</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="game-container">
+  <header>
+    <h1>数学炮弹乐园</h1>
+    <div class="status-bar">
+      <div>等级: <span id="level">1</span></div>
+      <div>得分: <span id="score">0</span></div>
+      <div>目标: <span id="target">10</span></div>
+      <div>生命: <span id="lives"></span></div>
+    </div>
+  </header>
+
+  <main>
+    <div id="playfield" class="playfield"></div>
+    <div class="input-row">
+      <input id="answerInput" type="number" inputmode="numeric" placeholder="输入答案 回车发射炮弹" />
+      <button id="fireBtn">发射</button>
+    </div>
+    <div id="message" class="message"></div>
+  </main>
+
+  <aside class="instructions">
+    <h2>玩法说明</h2>
+    <ul>
+      <li>从天空飘下加减法公式，输入正确答案并按回车或点发射即可消灭它。</li>
+      <li>公式落地会扣除一条生命。生命用小❤表示，掉光(10次)游戏结束。</li>
+      <li>等级提升：从简单 (两个数字 ≤10) 到复杂 (四个数字 ≤20)。</li>
+      <li>每关达到目标消灭数量自动进入下一关，最高第4关胜利。</li>
+      <li>结果永远保持在 0~20 范围内，题目适合儿童练习心算。</li>
+    </ul>
+  </aside>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
