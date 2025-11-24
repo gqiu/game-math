@@ -1,0 +1,15 @@
+name = "math-arithmetic-game"
+pages_build_output_dir = "."
+compatibility_date = "2025-11-24"
+
+# 可选: 自定义路由/环境变量等
+# [vars]
+# API_BASE = "https://example.com"
+
+# 说明:
+# 该配置用于 Cloudflare Pages CLI (Wrangler) 部署静态站点。
+# 部署命令:
+#   1) 安装: npm install -D wrangler
+#   2) 登录: npx wrangler login
+#   3) 部署: npx wrangler pages deploy . --project-name math-arithmetic-game
+# 或者在 Cloudflare Pages 后台创建项目并绑定此仓库, 构建命令留空, 输出目录设为根目录 '.'。
