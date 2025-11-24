@@ -30,6 +30,18 @@
 ## 本地运行
 直接双击或拖拽 `index.html` 到浏览器打开即可，无需构建。
 
+### Node.js 本地开发 (可选)
+使用内置 Express 服务器方便在本地模拟部署环境与添加后端接口。
+
+```bash
+npm install        # 安装依赖 (已执行过可跳过)
+npm run dev        # 开发模式: 自动重启
+# 或
+npm start          # 生产/普通启动
+```
+
+启动后访问: http://localhost:3000
+
 ## Cloudflare Pages 部署
 
 ### 方法一：控制台部署（推荐）
