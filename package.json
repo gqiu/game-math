@@ -6,13 +6,13 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "deploy:pages": "npx wrangler pages deploy . --project-name math-arithmetic-game"
+    "pages:deploy": "wrangler pages deploy . --project-name math-arithmetic-game"
   },
   "dependencies": {
     "express": "^4.19.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "wrangler": "^3.0.0"
+    "wrangler": "^4.50.0"
   }
 }
