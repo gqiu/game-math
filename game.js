@@ -8,6 +8,10 @@
   const targetEl = document.getElementById("target");
   const livesEl = document.getElementById("lives");
   const messageEl = document.getElementById("message");
+  // 音效（与数字射击模式共用）
+  const hitAudio = createAudio("audio/hit.mp3");
+  const missAudio = createAudio("audio/miss.mp3");
+  const levelAudio = createAudio("audio/level.mp3");
 
   // 游戏状态
   let level = 1;
@@ -146,6 +150,7 @@
     // 没有匹配题目 => 答错
     if (!targetFormula) {
       setMessage("答错了!", "bad");
+      play(missAudio);
       return;
     }
 
@@ -258,6 +263,7 @@
     destroyedThisLevel += 1;
     updateHUD();
     setMessage("命中 +1", "good");
+    play(hitAudio);
     checkLevelProgress();
   }
 
@@ -269,6 +275,7 @@
     lives -= 1;
     renderLives();
     setMessage("落地 -1", "bad");
+    play(missAudio);
     if (lives <= 0) {
       endGame(false);
     }
@@ -285,6 +292,7 @@
       destroyedThisLevel = 0;
       levelEl.textContent = level;
       setMessage("升级！等级 " + level + "/" + maxLevel, "level");
+      play(levelAudio);
       restartSpawning();
     }
   }
@@ -370,6 +378,21 @@
   // 工具函数
   function randInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  // 音效辅助函数
+  function createAudio(src) {
+    const a = document.createElement("audio");
+    a.src = src;
+    a.preload = "auto";
+    a.volume = 0.7;
+    return a;
+  }
+  function play(a) {
+    try {
+      a.currentTime = 0;
+      a.play().catch(()=>{});
+    } catch {}
   }
 
   // 输入事件

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+<title>数字射击练习 - 20以内加减法</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="shooting-game-container">
+  <header class="shooting-header">
+    <h1>数字射击练习</h1>
+<nav class="shooting-nav">
+      <a href="index.html">← 返回炮弹落下模式</a>
+      <button id="restartBtn" class="restart-btn">重开</button>
+    </nav>
+    <div class="shooting-status">
+      <div>等级: <span id="sLevel">1</span></div>
+      <div>等级进度: <span id="sLevelHits">0</span>/10</div>
+      <div>剩余时间: <span id="sTime">60.0s</span> / <span id="sTotal">60s</span></div>
+      <div>得分: <span id="sHits">0</span></div>
+    </div>
+  </header>
+
+  <main class="shooting-main">
+    <div id="targetField" class="target-field"></div>
+    <div class="shooting-input-row">
+      <input id="shotInput" type="number" inputmode="numeric" placeholder="输入结果 回车射击" />
+      <button id="shotBtn">射击</button>
+    </div>
+    <div id="shotMsg" class="shot-msg"></div>
+  </main>
+
+  <aside class="shooting-instructions">
+    <h2>玩法说明</h2>
+    <ul>
+      <li>场地同时随机出现 4 个靶子，每个显示一个 0~20 结果的加减法公式。</li>
+      <li>输入答案回车或点“射击”，命中后靶子落下并立即补新靶子。</li>
+      <li>比赛时长 60 秒，结束时显示总得分（命中个数）。</li>
+      <li>等级共 10 级，每级命中 10 次自动升级：</li>
+      <li>1-3级：2 个数字（最大 10）；4-6级：3 个数字（最大 20）；7-10级：4 个数字（最大 20）。</li>
+      <li>当前等级进度在状态栏显示 (已命中/10)。</li>
+      <li>所有公式结果保持在 0~20，答错仅提示不扣分。</li>
+      <li>可自行添加真实音效替换占位 (hit / miss / level)。</li>
+    </ul>
+  </aside>
+</div>
+
+<div id="shootingOverlay" class="shooting-overlay hidden">
+  <div class="overlay-box">
+    <h2 id="finalTitle">时间结束</h2>
+    <p>得分: <span id="finalTime">0</span></p>
+    <button id="overlayRestart" class="restart-btn">再来一次</button>
+    <a href="index.html" class="back-link">返回另一模式</a>
+  </div>
+</div>
+
+<script src="shooting.js"></script>
+</body>
+</html>

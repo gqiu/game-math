@@ -259,3 +259,335 @@ h1, h2 {
   .instructions { font-size: 0.8rem; }
   .input-row input { font-size: 1rem; }
 }
+
+/* ===== 数字射击练习新增样式 ===== */
+
+.shooting-game-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0.6rem 0.75rem 2.8rem;
+}
+
+.shooting-header nav.shooting-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.55rem;
+}
+
+.shooting-nav a,
+.back-link {
+  font-size: 0.9rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  background: #fff;
+  padding: 0.4rem 0.75rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transition: background .25s;
+}
+
+.shooting-nav a:hover,
+.back-link:hover {
+  background: #f2f7ff;
+}
+
+.restart-btn {
+  background: var(--primary);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.5rem 0.95rem;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255,127,80,0.45);
+  font-size: 0.9rem;
+  transition: transform .15s, filter .25s;
+}
+
+.restart-btn:active {
+  transform: scale(.92);
+}
+
+.restart-btn:hover {
+  filter: brightness(1.12);
+}
+
+.shooting-status {
+  display: flex;
+  gap: 1.1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+  background: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 0.4rem;
+}
+
+.shooting-status span {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.target-field {
+  position: relative;
+  width: 100%;
+  min-height: 45vh;
+  background: radial-gradient(circle at 50% 40%, #ffffff 0%, #eefaff 60%, #d8f2ff 100%);
+  border: 4px solid #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  overflow: visible; /* 允许立杆与底座完全显示 */
+  padding: 0.6rem 0.8rem 1.2rem;
+}
+
+/* 草地效果已移除，应用户反馈保留清爽背景 */
+
+/* 立式靶子（含面、立杆、底座）并具有远近分层 */
+.target {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  transform-origin: center bottom;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 32px;
+  pointer-events: none;
+  /* 初始将实际点击逻辑仍通过输入，不需鼠标交互 */
+}
+
+.target-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #fff;
+  border: 6px solid var(--accent);
+  box-shadow:
+    inset 0 0 10px rgba(255,255,255,0.9),
+    0 6px 16px rgba(0,0,0,0.18);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .35s, filter .35s, opacity .4s;
+}
+
+.target[data-len="2"] .target-face { border-color: #ffb347; color:#ff7f24; }
+.target[data-len="3"] .target-face { border-color: #6ad488; color:#1e9d46; }
+.target[data-len="4"] .target-face { border-color: #a083ff; color:#6230ff; }
+
+.target-pole {
+  position: absolute;
+  left: 50%;
+  bottom: -70px;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 70px;
+  background: linear-gradient(to bottom,#d8ad6b,#b07a3c);
+  border-radius: 4px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.25);
+}
+
+.target-base {
+  position: absolute;
+  left: 50%;
+  bottom: -82px;
+  transform: translateX(-50%);
+  width: 58px;
+  height: 20px;
+  background: linear-gradient(145deg,#9e6c2c,#c58a3c 60%,#e7b56a);
+  border-radius: 10px / 6px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+/* 远近层次: far 最远、mid 中、near 最近 */
+.depth-far  { transform: translateY(-8px)  scale(.68); z-index:1; filter: brightness(.94); }
+.depth-mid  { transform: translateY(-4px)  scale(.82); z-index:2; filter: brightness(.97); }
+.depth-near { transform: translateY(0)     scale(1);    z-index:3; }
+
+.target.fall .target-face {
+  animation: targetFallFace 420ms ease-in forwards;
+}
+.target.fall .target-pole,
+.target.fall .target-base {
+  animation: targetFallParts 420ms ease-in forwards;
+}
+
+@keyframes targetFallFace {
+  0% { transform: translateY(0) scale(1); opacity:1; }
+  70% { transform: translateY(50px) scale(.9); opacity:.85; }
+  100% { transform: translateY(100px) scale(.55); opacity:0; }
+}
+
+@keyframes targetFallParts {
+  0% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
+  100% { transform: translateX(-50%) translateY(35px) scale(.6); opacity:0; }
+}
+
+.target[data-len="2"] { border-color: #ffb347; color:#ff7f24; }
+.target[data-len="3"] { border-color: #6ad488; color:#1e9d46; }
+.target[data-len="4"] { border-color: #a083ff; color:#6230ff; }
+
+.target.fall {
+  animation: targetFall 420ms ease-in forwards;
+}
+
+@keyframes targetFall {
+  0% { transform: translateY(0) scale(1); opacity:1; }
+  70% { transform: translateY(45px) scale(.92); opacity:.8; }
+  100% { transform: translateY(90px) scale(.6); opacity:0; }
+}
+
+.shooting-input-row {
+  margin: 0.85rem 0 0.35rem;
+  display: flex;
+  gap: 0.65rem;
+  justify-content: center;
+}
+
+.shooting-input-row input {
+  flex: 1;
+  max-width: 300px;
+  padding: 0.6rem 0.95rem;
+  font-size: 1.05rem;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  outline: none;
+  transition: box-shadow .25s, border-color .25s;
+}
+
+.shooting-input-row input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(255,127,80,0.25);
+}
+
+.shooting-input-row button {
+  padding: 0.6rem 1.15rem;
+  font-size: 1.05rem;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(255,127,80,0.4);
+  transition: transform .15s, background .3s;
+}
+
+.shooting-input-row button:active { transform: scale(.92); }
+.shooting-input-row button:hover { background:#ff956d; }
+
+.shot-msg {
+  min-height: 28px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.shot-msg.good { color: var(--good); }
+.shot-msg.bad { color: var(--danger); }
+.shot-msg.level { color: var(--accent); }
+
+.arrow {
+  position: fixed;
+  width: 18px;
+  height: 6px;
+  background: linear-gradient(90deg,#ffb88c 0%, #ff7f50 55%, #ff4500 100%);
+  border-radius: 3px;
+  top: 0;
+  left: 0;
+  z-index: 120;
+  box-shadow: 0 0 10px rgba(255,90,40,0.7);
+  transform-origin: left center;
+}
+
+.shooting-instructions {
+  background: #ffffff;
+  margin-top: 0.65rem;
+  padding: 0.8rem 1rem 1.2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  font-size: 0.9rem;
+  line-height: 1.4rem;
+}
+
+.shooting-overlay.hidden { display: none; }
+
+.shooting-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.overlay-box {
+  background: #fff;
+  padding: 1.2rem 1.5rem 1.4rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+  min-width: clamp(260px,50vw,460px);
+  text-align: center;
+  color: var(--accent);
+}
+
+.overlay-box h2 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(22px,5vw,38px);
+}
+
+.overlay-box p {
+  margin: 0.4rem 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 0.6rem;
+}
+
+/* 简化模式靶子样式 (simple-target): 强制可见的基础圆形靶 */
+.target.simple-target,
+.target.fallback-target {
+  position: static !important;
+  width: 110px !important;
+  height: 110px !important;
+  border: 5px solid #6a5acd !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 32px;
+  color: #6a5acd;
+  margin: 12px 10px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  z-index: 15;
+}
+
+.target.simple-target[data-len="3"] { border-color:#2ecc71; color:#1e8c3f; }
+.target.simple-target[data-len="4"] { border-color:#ff7f50; color:#ff5a1f; }
+
+@media (max-width: 640px) {
+  .target-field {
+    grid-template-columns: repeat(auto-fit,minmax(90px,1fr));
+    min-height: 46vh;
+  }
+  .target {
+    font-size: clamp(18px,5vw,30px);
+    width: clamp(80px,20vw,110px);
+    height: clamp(80px,20vw,110px);
+  }
+}
