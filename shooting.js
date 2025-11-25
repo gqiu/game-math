@@ -20,7 +20,7 @@
   const levelAudio = createAudio("audio/level.mp3");
 
   // 配置（改为计时 + 得分模式）
-  const TARGET_COUNT = 4;
+  const TARGET_COUNT = 5;
   const MAX_TIME = 60;        // 单局总时长 (秒)
   const LEVEL_TARGET = 10;    // 每级需要命中数
   totalEl.textContent = MAX_TIME + "s"; // HUD 显示总时长
