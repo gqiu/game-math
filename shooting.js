@@ -21,9 +21,10 @@
 
   // 配置（改为计时 + 得分模式）
   const TARGET_COUNT = 5;
-  const MAX_TIME = 60;        // 单局总时长 (秒)
+  let totalTime = 180;        // 初始总时长 (秒) 改为 3 分钟
+  const EXTRA_PER_LEVEL = 20; // 每次升级增加秒数
   const LEVEL_TARGET = 10;    // 每级需要命中数
-  totalEl.textContent = MAX_TIME + "s"; // HUD 显示总时长
+  totalEl.textContent = totalTime + "s"; // HUD 显示当前总时长
 
   // 难度与升级：共 10 级，每命中 LEVEL_TARGET(=10) 次自动升级
   // 等级配置：提升操作数与最大取值范围，结果始终限制在 0~20
@@ -284,7 +285,25 @@
     // 结构: 面（已移除靶杆与底座）
     const face = document.createElement("div");
     face.className = "target-face";
-    face.textContent = expr;
+    // 包装表达式确保多数字公式完全居中
+    const span = document.createElement("span");
+    span.textContent = expr;
+    span.style.display = "inline-block";
+    span.style.width = "100%";
+    span.style.textAlign = "center";
+    face.appendChild(span);
+    // 根据操作数缩放字体防止溢出并强制居中
+    if (len === 3) {
+      face.style.fontSize = "28px";
+      face.style.display = "flex";
+      face.style.alignItems = "center";
+      face.style.justifyContent = "center";
+    } else if (len === 4) {
+      face.style.fontSize = "24px";
+      face.style.display = "flex";
+      face.style.alignItems = "center";
+      face.style.justifyContent = "center";
+    }
     target.appendChild(face);
     return target;
   }
@@ -387,8 +406,9 @@
       if (level < 10 && levelHits >= LEVEL_TARGET) {
         level += 1;
         levelHits = 0;
+        totalTime += EXTRA_PER_LEVEL; // 升级增加 20 秒
         play(levelAudio);
-        setMessage("升级 Level " + level, "level");
+        setMessage("升级 Level " + level + " (+20s)", "level");
       }
 
       updateHUD();
@@ -400,13 +420,14 @@
     levelEl.textContent = level;
     hitsEl.textContent = hits;
     if (levelHitsEl) levelHitsEl.textContent = levelHits;
+    totalEl.textContent = totalTime + "s";
   }
 
   function updateTime() {
     if (!startTime || finished) return;
     const now = performance.now();
     const elapsed = (now - startTime) / 1000;
-    const remaining = Math.max(0, MAX_TIME - elapsed);
+    const remaining = Math.max(0, totalTime - elapsed);
     timeEl.textContent = remaining.toFixed(1) + "s";
     if (remaining <= 0) {
       finished = true;
@@ -431,7 +452,7 @@
     hits = 0;
     levelHits = 0;
     startTime = null;
-    timeEl.textContent = MAX_TIME + ".0s";
+    timeEl.textContent = totalTime + ".0s";
     overlay.classList.add("hidden");
     spawnInitialTargets();
     updateHUD();
